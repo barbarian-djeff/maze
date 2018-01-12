@@ -1,4 +1,4 @@
-package maze
+package grid
 
 type Grid struct {
 	Row, Column int
