@@ -1,19 +1,34 @@
 package grid
 
-func Display(grid *Grid) {
-	var output = "+" + "---+" * columns + "\n"
-	//each_row do |row| top = "|" bottom = "+"
-	//row.each do |cell|
-	//	cell = Cell.new(-1, -1) unless cell
-	//body = " " # <-- that's THREE (3) spaces!
-	//east_boundary = (cell.linked?(cell.east) ? " " : "|")
-	//top << body << east_boundary
-	//# three spaces below, too >>-------------->> >...<
-	//south_boundary = (cell.linked?(cell.south) ? " corner = "+"
-	//bottom << south_boundary << corner
-	//end
-	//output << top << "\n"
-	//output << bottom << "\n" end
-	//output
-	//end
+import "fmt"
+
+func Display(g Grid) {
+	var lastLine *string
+	for r, row := range g.Cells {
+		border := "+"
+		for _, cell := range row {
+			if cell.Up != nil {
+				border += "   +"
+			} else {
+				border += "---+"
+			}
+		}
+		if r == 0 {
+			lastLine = &border
+		}
+		fmt.Println(border)
+
+		line := "|"
+		for _, cell := range row {
+			if cell.Right != nil {
+				line += "   "
+			} else {
+				line += "   |"
+			}
+		}
+		fmt.Println(line)
+	}
+	if lastLine != nil {
+		println(*lastLine)
+	}
 }

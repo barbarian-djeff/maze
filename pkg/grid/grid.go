@@ -2,16 +2,11 @@ package grid
 
 type Grid struct {
 	Row, Column int
-	Cells       map[int]Cell
-}
-
-type Position struct {
-	Row, Column int
+	Cells       [][]Cell
 }
 
 type Cell struct {
-	Pos                      Position
-	North, South, East, West bool
+	Up, Left, Right, Down *Cell
 }
 
 func (grid *Grid) Size() int {
@@ -19,32 +14,17 @@ func (grid *Grid) Size() int {
 }
 
 // create cells without neighbours
-func NewGrid(row int, column int) Grid {
-	var cells = map[int]Cell{}
-	for r := 0; r < row; r++ {
-		for c := 0; c < column; c++ {
-			pos := Position{
-				Row:    r,
-				Column: c,
-			}
-			hash := hash(pos)
-			cells[hash] = Cell{
-				Pos:   pos,
-				North: false,
-				South: false,
-				West:  false,
-				East:  false,
-			}
+func NewGrid(nrow, ncol int) Grid {
+	cells := make([][]Cell, nrow)
+	for r := 0; r < nrow; r++ {
+		cells[r] = make([]Cell, ncol)
+		for c := 0; c < ncol; c++ {
+			cells[r][c] = Cell{}
 		}
 	}
 	return Grid{
-		Row:    row,
-		Column: column,
+		Row:    nrow,
+		Column: ncol,
 		Cells:  cells,
 	}
 }
-
-func hash(pos Position) int {
-	return pos.Column*37 + pos.Row
-}
-
